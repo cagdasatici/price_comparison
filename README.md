@@ -1,71 +1,89 @@
-# Price Comparison Tool
+# Price Comparison Scraper
 
-A Python application for comparing prices across multiple Dutch e-commerce websites. This tool helps you find the best deals on gaming consoles, games, and accessories.
+A Python-based web scraping tool that collects product information from various Dutch e-commerce websites for price comparison.
 
 ## Features
 
-- Real-time price comparison across multiple stores
-- Modern UI with dark mode support
-- Progress tracking for each store search
-- Price validation to ensure reasonable results
-- Support for multiple product categories (consoles, games, accessories)
-- Direct links to product pages
+- Scrapes product information from multiple stores:
+  - Amazon.nl
+  - MediaMarkt.nl
+  - HEMA.nl
+  - Marktplaats.nl
+- Extracts detailed product information including:
+  - Title
+  - Price
+  - Description
+  - Image URL
+  - Product URL
+  - Availability
+- Generates HTML reports with search results
+- Supports sorting by price and relevance
+- Handles pagination and multiple results
 
 ## Installation
 
-1. Make sure you have Python 3.8 or higher installed
-2. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/price_comparison.git
-   cd price_comparison
-   ```
-3. Install the required packages:
-   ```bash
-   pip install -r requirements.txt
-   ```
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/price_comparison.git
+cd price_comparison
+```
+
+2. Install required packages:
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
 
-1. Run the application:
-   ```bash
-   python main.py
-   ```
-2. Enter the product name in the search box
-3. Click "Search" to start the price comparison
-4. View results in the table below
-5. Click on any result to open the product page in your browser
+```python
+from scrapers.amazon_scraper import AmazonScraper
+from scrapers.mediamarkt_scraper import MediaMarktScraper
+from scrapers.hema_scraper import HemaScraper
 
-## Supported Stores
+# Initialize scrapers
+amazon_scraper = AmazonScraper()
+mediamarkt_scraper = MediaMarktScraper()
+hema_scraper = HemaScraper()
 
-- Bol.com
-- Amazon.nl
-- Coolblue.nl
-- MediaMarkt.nl
-- Tweakers.net
-- Wehkamp.nl
-- BCC.nl
-- Alternate.nl
-- Azerty.nl
-- GameMania.nl
-- Bart Smit
-- Intertoys
-- And more...
+# Search for products
+amazon_results = amazon_scraper.search("PlayStation 5", max_results=5)
+mediamarkt_results = mediamarkt_scraper.search("iPad", sort_by="price_low_to_high")
+hema_results = hema_scraper.search("finger trainer")
+
+# Results are returned as a list of dictionaries containing product information
+```
 
 ## Project Structure
 
 ```
 price_comparison/
-├── main.py              # Main entry point
-├── ui/
-│   └── app.py          # UI components and main application class
 ├── scrapers/
-│   └── store_scrapers.py  # Store-specific scraping functions
-├── utils/
-│   └── price_utils.py  # Helper functions for price handling
-├── requirements.txt    # Python dependencies
-└── README.md          # This file
+│   ├── __init__.py
+│   ├── amazon_scraper.py
+│   ├── mediamarkt_scraper.py
+│   ├── hema_scraper.py
+│   └── marktplaats_scraper.py
+├── templates/
+│   └── results.html
+├── test_amazon_scraper.py
+├── test_mediamarkt_scraper.py
+├── test_hema_scraper.py
+├── requirements.txt
+└── README.md
 ```
+
+## Dependencies
+
+- Python 3.8+
+- Selenium
+- BeautifulSoup4
+- Requests
+- Jinja2
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. 
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 
