@@ -28,7 +28,12 @@ def validate_price(price, product):
         
     # Define price ranges for different product types
     price_ranges = {
-        'console': (100, 1000),  # Gaming consoles
+        'console': {
+            'ps5': (350, 800),  # PS5 specific range
+            'xbox': (350, 800),  # Xbox specific range
+            'switch': (250, 500),  # Nintendo Switch specific range
+            'default': (100, 1000)  # Default console range
+        },
         'game': (10, 100),       # Video games
         'accessory': (5, 200)    # Gaming accessories
     }
@@ -36,13 +41,19 @@ def validate_price(price, product):
     # Determine product type based on keywords
     product_lower = product.lower()
     
-    if any(keyword in product_lower for keyword in ['ps5', 'xbox', 'switch', 'console', 'playstation', 'nintendo']):
-        product_type = 'console'
+    # Check for specific console types
+    if 'ps5' in product_lower or 'playstation 5' in product_lower:
+        min_price, max_price = price_ranges['console']['ps5']
+    elif 'xbox' in product_lower:
+        min_price, max_price = price_ranges['console']['xbox']
+    elif 'switch' in product_lower or 'nintendo' in product_lower:
+        min_price, max_price = price_ranges['console']['switch']
+    elif any(keyword in product_lower for keyword in ['console', 'playstation', 'nintendo']):
+        min_price, max_price = price_ranges['console']['default']
     elif any(keyword in product_lower for keyword in ['game', 'spel', 'software']):
-        product_type = 'game'
+        min_price, max_price = price_ranges['game']
     else:
-        product_type = 'accessory'
+        min_price, max_price = price_ranges['accessory']
     
     # Check if price is within the valid range for the product type
-    min_price, max_price = price_ranges[product_type]
     return min_price <= price <= max_price 
